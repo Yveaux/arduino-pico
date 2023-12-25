@@ -474,7 +474,9 @@ static void __usb(void *param) {
     while (true) {
         auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
         if (xSemaphoreTake(m, 0)) {
+#ifdef CFG_TUD_ENABLED
             tud_task();
+#endif
             xSemaphoreGive(m);
         }
         vTaskDelay(1 / portTICK_PERIOD_MS);
