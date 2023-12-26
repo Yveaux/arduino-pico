@@ -472,13 +472,13 @@ static void __usb(void *param) {
     __usbInitted = true;
 
     while (true) {
+#if CFG_TUD_ENABLED
         auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
         if (xSemaphoreTake(m, 0)) {
-#ifdef CFG_TUD_ENABLED
             tud_task();
-#endif
             xSemaphoreGive(m);
         }
+#endif
         vTaskDelay(1 / portTICK_PERIOD_MS);
     }
 }
